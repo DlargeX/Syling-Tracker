@@ -1,3 +1,12 @@
+# 2.13.1
+
+###### NEW
+
+- Added textures for Midnight dungeons.
+- Added deDE locale. (thanks to @DlargeX)
+
+---
+
 ## 2.13.0
 
 ###### NEW

@@ -157,6 +157,16 @@ INSTANCE_TEXTURE_FILES_ID = {
   [2661] = 5912520, -- Cinderbrew Meadery 
   [2662] = 5912525, -- The Dawnbreaker
   [2669] = 5912521, -- City of Threads
+
+  -- Midnight instances 
+  [2805] = 7480227, -- Windrunner Spire
+  [2811] = 7480223, -- Magister's Terrace (Midnight)
+  [2813] = 7480225, -- Murder Row
+  [2825] = 7480226, -- Den of Nalorakk
+  [2859] = 7480222, -- The Blinding Vale
+  [2874] = 7480224, -- Maisara Caverns
+  [2915] = 7570503, -- Nexus Point Xenas
+  [2923] = 7480221, -- Voidscar
 }
 
 __Arguments__{ Number/0}

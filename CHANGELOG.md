@@ -1,4 +1,12 @@
-# 2.13.1
+# 2.13.2
+
+###### FIXES
+
+- Improved the handling of widgets for Scenario.
+
+---
+
+## 2.13.1
 
 ###### NEW
 

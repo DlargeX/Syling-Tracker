@@ -390,6 +390,7 @@ class "UIWidgets" (function(_ENV)
       widget.WidgetSetID  = widgetInfo.widgetSetID
       widget.UnitToken    = widgetInfo.unitToken
       self.Widgets[widgetID] = widget
+      self.NumWidgetsShowing = self.NumWidgetsShowing + 1
     end
 
     widget:Setup(widgetData)
@@ -406,7 +407,7 @@ class "UIWidgets" (function(_ENV)
   function ProcessAllWidgets(self)
     wipe(self.WidgetsKeys)
 
-    if self.WidgetSetID then 
+    if self.WidgetSetID then
       local widgetsInfo = GetAllWidgetsBySetID(self.WidgetSetID)
       for index, widgetInfo in ipairs(widgetsInfo) do
         self:ProcessWidget(widgetInfo)
@@ -432,7 +433,9 @@ class "UIWidgets" (function(_ENV)
             local widget = self.Widgets[widgetID]
             if widget then 
               widget:Release()
-              self.Widgets[widgetID] = nil 
+              self.Widgets[widgetID] = nil
+
+              self.NumWidgetsShowing = math.max(0, self.NumWidgetsShowing - 1)
             end
           end
         end
@@ -445,6 +448,7 @@ class "UIWidgets" (function(_ENV)
       if not self.WidgetsKeys[key] then
         widget:Release()
         self.Widgets[key] = nil
+        self.NumWidgetsShowing = math.max(0, self.NumWidgetsShowing - 1)
       end
     end
   end
@@ -464,11 +468,7 @@ class "UIWidgets" (function(_ENV)
   ---------------------------------------------------------------------------
   property "WidgetSetID" {
     type = Number,
-    handler = function(self, new)
-      if new ~= nil then 
-        self:ProcessAllWidgets()
-      end
-    end
+    handler = function(self, new) self:ProcessAllWidgets() end
   }
 
   property "Widgets" {
@@ -480,6 +480,12 @@ class "UIWidgets" (function(_ENV)
     set = false,
     default = function() return {} end
 
+  }
+
+  property "NumWidgetsShowing" {
+    type = Number,
+    default = 0,
+    event = "OnNumWidgetsShowingChanged"
   }
   -----------------------------------------------------------------------------
   --                              Constructors                               --

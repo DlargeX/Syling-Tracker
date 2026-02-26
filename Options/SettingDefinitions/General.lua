@@ -38,6 +38,12 @@ class "SettingDefinitions.General" (function(_ENV)
     enableTomTomCheckBox:SetLabel(("|cffff7f00(%s)|r %s"):format(L.EXPERIMENTAL, L.TOMTOM_ENABLE_INTEGRATION))
     enableTomTomCheckBox:BindSetting("enableTomTom")
     self.SettingControls.enableTomTomCheckBox = enableTomTomCheckBox
+
+    local useSecureMapFeatures = Widgets.SettingsCheckBox.Acquire(false, self)
+    useSecureMapFeatures:SetID(30)
+    useSecureMapFeatures:SetLabel("Use Secure Quests Features |cffff0000(may cause issues)|r")
+    useSecureMapFeatures:BindSetting("useSecureQuestFeatures")
+    self.SettingControls.useSecureMapFeatures = useSecureMapFeatures
   end
 
 

@@ -19,8 +19,17 @@ UTILS_SECURE_HANDLER_FRAME = CreateFrame("Frame", "SylingTracker_UtilsSecureHand
 UTILS_SECURE_HANDLER_FRAME:Hide()
 
 function Secure_OpenToQuestDetails(questID)
+  
   if InCombatLockdown() then 
     return 
+  end
+  
+  local useSecureFeatures = GetSetting("useSecureQuestFeatures")
+  if not useSecureFeatures then
+    local mapID = GetQuestUiMapID(questID)
+    C_QuestLog.SetSelectedQuest(questID)
+    C_Map.OpenWorldMap(mapID)
+    return
   end
 
   -- TODO: To remove once the action manager is implemented.
@@ -35,6 +44,7 @@ end
 Utils.Secure_OpenToQuestDetails = Secure_OpenToQuestDetails
 
 function OnLoad(self)
+  RegisterSetting("useSecureQuestFeatures", false)
   RegisterSetting("showMapForQuestDetails", true)
 end
 

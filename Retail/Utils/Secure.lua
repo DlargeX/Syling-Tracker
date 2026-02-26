@@ -27,6 +27,14 @@ function Secure_OpenToQuestDetails(questID)
   local useSecureFeatures = GetSetting("useSecureQuestFeatures")
   if not useSecureFeatures then
     local mapID = GetQuestUiMapID(questID)
+
+    if mapID == 0 then 
+      mapID = C_Map.GetBestMapForUnit("player")
+      if mapID == 0 then 
+        mapID = nil 
+      end
+    end
+
     C_QuestLog.SetSelectedQuest(questID)
     C_Map.OpenWorldMap(mapID)
     return

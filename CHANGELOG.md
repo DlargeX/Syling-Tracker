@@ -10,7 +10,7 @@ Once i find a solution that allow the old behavior without causing issues, i'll 
 
 ---
 
-# 2.13.2
+## 2.13.2
 
 ###### FIXES
 

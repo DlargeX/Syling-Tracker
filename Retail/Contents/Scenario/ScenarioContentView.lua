@@ -60,10 +60,11 @@ class "ScenarioContentView" (function(_ENV)
       self.CurrentStage = scenarioData.currentStage
       self.NumStages = scenarioData.numStages
       self.WidgetSetID = scenarioData.widgetSetID
+      self.TopWidgetSetID = scenarioData.topWidgetSetID
+      self.BottomWidgetSetID = scenarioData.bottomWidgetSetID
 
       local objectives = self:GetChild("Objectives")
       objectives:UpdateView(scenarioData.objectives, metadata)
-
 
       local bonusObjectivesData = scenarioData.bonusObjectives
       if bonusObjectivesData then 
@@ -128,12 +129,36 @@ class "ScenarioContentView" (function(_ENV)
   property "WidgetSetID" {
     type = Number
   }
+
+  __Observable__()
+  property "TopWidgetSetID" {
+    type = Number
+  }
+
+  __Observable__()
+  property "BottomWidgetSetID" {
+    type = Number
+  }
+
+  __Observable__()
+  property "HasAnyTopWidgetsShowing" {
+    type = Boolean,
+    default = false
+  }
+
+  __Observable__()
+  property "HasAnyBottomWidgetsShowing" {
+    type = Boolean,
+    default = false
+  }
   -----------------------------------------------------------------------------
   --                              Constructors                               --
   -----------------------------------------------------------------------------
   __Template__ {
     TopScenarioInfo = Frame,
     Widgets = UIWidgets,
+    TopWidgets = UIWidgets,
+    BottomWidgets = UIWidgets,
     Objectives = ObjectiveListView,
     {
       TopScenarioInfo = {
@@ -144,10 +169,21 @@ class "ScenarioContentView" (function(_ENV)
       }
     }
   }
+  __InstantApplyStyle__()
   function __ctor(self) 
     local topInfo = self:GetChild("TopScenarioInfo")
     topInfo.OnEnter = topInfo.OnEnter + OnTopInfoEnter
     topInfo.OnLeave = topInfo.OnLeave + OnTopInfoLeave
+
+    local topWidgets = self:GetChild("TopWidgets")
+    topWidgets.OnNumWidgetsShowingChanged = topWidgets.OnNumWidgetsShowingChanged + function()
+      self.HasAnyTopWidgetsShowing = topWidgets.NumWidgetsShowing > 0
+    end
+
+    local bottomWidgets = self:GetChild("BottomWidgets")
+    bottomWidgets.OnNumWidgetsShowingChanged = bottomWidgets.OnNumWidgetsShowingChanged + function()
+      self.HasAnyBottomWidgetsShowing = bottomWidgets.NumWidgetsShowing > 0
+    end
   end 
 end)
 
@@ -197,6 +233,28 @@ function FromTopInfoLocation()
     }
   end)
 end
+
+function FromObjectivesLocation()
+  return FromUIProperty("WidgetSetID"):Map(function(id)
+    local widgetsShown = id and id > 0 or false
+    return {
+      Anchor("TOP", 0, -5, widgetsShown and "Widgets" or "TopScenarioInfo", "BOTTOM"),
+      Anchor("LEFT"),
+      Anchor("RIGHT")
+    }
+  end)
+end
+
+function FromBottomWidgetsLocation()
+  return FromUIProperty("HasAnyTopWidgetsShowing"):Map(function(topWidgetsShown)
+    return {
+      Anchor("TOP", 0, -5, topWidgetsShown and "TopWidgets" or "Objectives", "BOTTOM"),
+      Anchor("LEFT"),
+      Anchor("RIGHT")
+    }
+  end)
+end
+
 -------------------------------------------------------------------------------
 --                                Styles                                     --
 -------------------------------------------------------------------------------
@@ -276,6 +334,17 @@ Style.UpdateSkin("Default", {
       }
     },
 
+    Widgets = {
+      visible                         = FromUIProperty("WidgetSetID"):Map(function(id) return id and id > 0 or false end),
+      widgetSetID                     = FromUIProperty("WidgetSetID"),
+      location                        = {
+                                        Anchor("TOP", 0, -5, "TopScenarioInfo", "BOTTOM"),
+                                        Anchor("LEFT"),
+                                        Anchor("RIGHT")        
+                                      }
+    },
+
+
     Objectives = {
       autoAdjustHeight                = true,
       paddingTop                      = 5,
@@ -285,23 +354,27 @@ Style.UpdateSkin("Default", {
                                       },
       backdropColor                   = { r = 35/255, g = 40/255, b = 46/255, a = 0.73},
 
-      location                        = {
-                                        Anchor("TOP", 0, -5, "TopScenarioInfo", "BOTTOM"),
-                                        Anchor("LEFT"),
-                                        Anchor("RIGHT")
-                                      }      
+      location                        = FromObjectivesLocation()     
     },
 
-    Widgets = {
-      visible                         = FromUIProperty("WidgetSetID"):Map(function(id) return id and id > 0 or false end),
-      widgetSetID                     = FromUIProperty("WidgetSetID"),
+    TopWidgets = {
+      visible                         = FromUIProperty("HasAnyTopWidgetsShowing"),
+      widgetSetID                     = FromUIProperty("TopWidgetSetID"),
+
       location                        = {
-                                        Anchor("TOP", 0, 0, "Objectives", "BOTTOM"),
+                                        Anchor("TOP", 0, -5, "Objectives", "BOTTOM"),
                                         Anchor("LEFT"),
                                         Anchor("RIGHT")        
                                       }
     },
+    
+    BottomWidgets = {
+      visible                         = FromUIProperty("HasAnyBottomWidgetsShowing"),
+      widgetSetID                     = FromUIProperty("BottomWidgetSetID"),
+      location                        = FromBottomWidgetsLocation()
 
+    },
+    
     [ScenarioContentView.BonusObjectives] = {
       autoAdjustHeight                = true,
       paddingTop                      = 5,

@@ -32,6 +32,8 @@ __DataProperties__{
   { name = "weightedProgress", type = Number},
   { name = "rewardQuestID", type = Number},
   { name = "widgetSetID", type = Number},
+  { name = "topWidgetSetID", type = Number},
+  { name = "bottomWidgetSetID", type = Number},
   { name = "objectives", type = ObjectiveData, isArray = true, singularName = "objective"},
   { name = "bonusObjectives", type = ObjectiveData, isArray = true, singularName = "bonusObjective"}
 }

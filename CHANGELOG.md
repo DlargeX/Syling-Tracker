@@ -1,4 +1,24 @@
-# 2.13.1
+# 2.13.3
+
+**IMPORTANT !**
+
+The click action for quests has been changed. Now, clicking a quest will open the map in the quest's zone without selecting the quest directly. I had to update this behavior because the previous one could annoying issues: it could indirectly taint the world map, trigger protected errors and in certain case break the Blizzard tooltip.
+
+For users who want the previous behavior, you can revert this change in the "General" options by checking "Use Secure Quest Features". If you encounter any issues and you find them annoying, i recommend to uncheck it and doing /reload.
+
+Once i find a solution that allow the old behavior without causing issues, i'll do an update to restore it.
+
+---
+
+## 2.13.2
+
+###### FIXES
+
+- Improved the handling of widgets for Scenario.
+
+---
+
+## 2.13.1
 
 ###### NEW
 

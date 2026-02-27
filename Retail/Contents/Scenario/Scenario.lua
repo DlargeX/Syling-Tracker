@@ -91,7 +91,9 @@ function UpdateScenario(self)
     scenarioData.shouldShowBonusObjective = scenarioStepInfo.shouldShowBonusObjective
     scenarioData.spells = scenarioStepInfo.spells
     scenarioData.rewardQuestID = scenarioStepInfo.rewardQuestID
-    scenarioData.widgetSetID = scenarioStepInfo.widgetSetID or SCENARIO_TRACKER_WIDGET_SET
+    scenarioData.widgetSetID = scenarioStepInfo.widgetSetID
+    scenarioData.topWidgetSetID = SCENARIO_TRACKER_TOP_WIDGET_SET
+    scenarioData.bottomWidgetSetID = SCENARIO_TRACKER_WIDGET_SET
     scenarioData.stepID = scenarioStepInfo.stepID
     scenarioData.weightedProgress = scenarioStepInfo.weightedProgress
 

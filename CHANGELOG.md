@@ -1,4 +1,12 @@
-# 2.13.3
+# 2.13.4
+
+###### FIXES
+
+- Fixed an issue where a ticker was created when it wasn't needed. ([ticket #227](https://github.com/Skamer/Syling-Tracker/issues/227))
+
+---
+
+## 2.13.3
 
 **IMPORTANT !**
 

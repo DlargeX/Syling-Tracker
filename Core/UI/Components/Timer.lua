@@ -15,25 +15,20 @@ export {
   FromUIProperty                      = Wow.FromUIProperty
 }
 TIMERS                                = {}
-
-TICKER = C_Timer.NewTicker(0.5, function()
-  for timer in pairs(TIMERS) do 
-    timer:OnTick()
-  end
-end)
+TICKER                                = nil
 
 local function RegisterTimer(timer)
   if not TICKER or TICKER:IsCancelled() then 
-    TICKER = C_Timer.NewTicker(1, function()
+    TICKER = C_Timer.NewTicker(0.5, function()
       for timer in pairs(TIMERS) do 
-        timer:OnTick()
+        timer:OnTick(0.5)
       end
     end)
   end
 
   TIMERS[timer] = true
 
-  timer:OnTick()
+  timer:OnTick(0)
 end
 
 local function UnregisterTimer(timer)
